@@ -223,8 +223,10 @@ def get_pytorch_train_loader(data_path, batch_size, workers=5, _worker_init_fn=N
     train_dataset = datasets.ImageFolder(
             traindir,
             transforms.Compose([
-                transforms.RandomResizedCrop(input_size),
-                transforms.RandomHorizontalFlip(),
+                # transforms.RandomResizedCrop(input_size),
+                # transforms.RandomHorizontalFlip(),
+                transforms.RandomPosterize(bits = 2),
+                transforms.RandomPerspective(),
                 ]))
 
     if torch.distributed.is_initialized():

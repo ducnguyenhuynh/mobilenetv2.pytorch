@@ -135,7 +135,11 @@ def main():
 
     # create model
     print("=> creating model '{}'".format(args.arch))
-    model = models.__dict__[args.arch](width_mult=args.width_mult)
+    # model = models.__dict__[args.arch](width_mult=args.width_mult)
+    num_classes = 6
+    model = customized_models.mobilenetv2(width_mult = 0.1)
+    model.load_state_dict(torch.load('pretrained/mobilenetv2_0.1-7d1d638a.pth'))
+    model.classifier = nn.Linear(model.output_channel, num_classes)
 
     if not args.distributed:
         if args.arch.startswith('alexnet') or args.arch.startswith('vgg'):
