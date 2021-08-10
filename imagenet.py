@@ -59,7 +59,7 @@ parser.add_argument('--epochs', default=90, type=int, metavar='N',
                     help='number of total epochs to run')
 parser.add_argument('--start-epoch', default=0, type=int, metavar='N',
                     help='manual epoch number (useful on restarts)')
-parser.add_argument('-b', '--batch-size', default=256, type=int,
+parser.add_argument('-b', '--batch-size', default=8, type=int,
                     metavar='N',
                     help='mini-batch size (default: 256), this is the total '
                          'batch size of all GPUs on the current node when '
@@ -135,11 +135,12 @@ def main():
 
     # create model
     print("=> creating model '{}'".format(args.arch))
-    # model = models.__dict__[args.arch](width_mult=args.width_mult)
-    num_classes = 6
-    model = customized_models.mobilenetv2(width_mult = 0.1)
-    model.load_state_dict(torch.load('pretrained/mobilenetv2_0.1-7d1d638a.pth'))
-    model.classifier = nn.Linear(model.output_channel, num_classes)
+    model = models.__dict__[args.arch](num_classes = 7, width_mult=args.width_mult)
+    # num_classes = 7
+    # model = customized_models.mobilenetv2(width_mult = 0.1)
+    # model.load_state_dict(torch.load('pretrained/mobilenetv2_0.1-7d1d638a.pth'))
+    # model.load_state_dict(torch.load('savefiles_0.1/model_best.pth'))
+    # model.classifier = nn.Linear(model.output_channel, num_classes)
 
     if not args.distributed:
         if args.arch.startswith('alexnet') or args.arch.startswith('vgg'):
